@@ -91,10 +91,15 @@ if __name__ == '__main__':
         
         output_file = os.path.join(output_path,animeName,f"{animeName}[{episode}].mp4")
         epiNum = str(episode).zfill(3) # 設定集數
-        m3u8_url = f"https://vpx05.myself-bbs.com/vpx/{animeID}/{epiNum}/720p.m3u8" # 設定 m3u8 網址
-
-        animedl = AnimeDownloader(cfg,tmp_path,m3u8_url,output_file)
-        animedl.run()
+        try:
+            m3u8_url = f"https://vpx05.myself-bbs.com/vpx/{animeID}/{epiNum}/720p.m3u8" # 設定 m3u8 網址
+            animedl = AnimeDownloader(cfg,tmp_path,m3u8_url,output_file)
+            animedl.run()
+        except:
+            epiNum += '_v01'
+            m3u8_url = f"https://vpx05.myself-bbs.com/vpx/{animeID}/{epiNum}/720p.m3u8" # 設定 m3u8 網址
+            animedl = AnimeDownloader(cfg,tmp_path,m3u8_url,output_file)
+            animedl.run()
 
         # 安全刪除暫存資料夾
         if tmp_path.startswith(os.getcwd()) and animeName in tmp_path:
